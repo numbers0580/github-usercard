@@ -3,6 +3,17 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+const myID = axios.get('https://api.github.com/users/numbers0580')
+  .then(responder => {
+    //console.log('numbers0580 data', responder);
+    const fetchedUser = responder.data;
+    //console.log('numbers0580 company', responder.data.company);
+    return fetchedUser;
+    //githubUser(responder.data);
+  })
+  .catch(errorMessage => {
+    console.log('Danger, Will Robinson, Danger!');
+  })
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -16,6 +27,8 @@
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
+let mainCards = document.querySelector('.cards');
+mainCards.appendChild(githubUser(myID));
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -49,6 +62,46 @@ const followersArray = [];
       </div>
     </div>
 */
+function githubUser(usersData) {
+  //Creating tags
+  let mainDiv = document.createElement('div');
+  let imageTag = document.createElement('img');
+  let nestedDiv = document.createElement('div');
+  let nameTag = document.createElement('h3');
+  let ghPage = document.createElement('a');
+  let pTags = [];
+  for(let i = 0; i < 6; i++) {
+    pTags.push(document.createElement('p'));
+  }
+
+  //Adding Details
+  mainDiv.classList.add('card');
+  imageTag.setAttribute('src', usersData['avatar_url']);
+  nestedDiv.classList.add('card-info');
+  nameTag.classList.add('name');
+  nameTag.textContent = usersData.name;
+  ghPage.setAttribute('href', usersData['html_url']);
+  ghPage.textContent = usersData['html_url'];
+  pTags[0].classList.add('username');
+  pTags[0].textContent = usersData.login;
+  pTags[1].textContent = usersData.location;
+  pTags[2].textContent = 'Profile:';
+  pTags[3].textContent = `Followers: ${usersData.followers}`;
+  pTags[4].textContent = `Following: ${usersData.following}`;
+  pTags[5].textContent = `Bio: ${usersData.bio}`;
+
+  //Appending all children
+  pTags[2].appendChild(ghPage);
+  nestedDiv.appendChild(nameTag);
+  for(j = 0; j < 6; j++) {
+    nestedDiv.appendChild(pTags[j]);
+  }
+  mainDiv.appendChild(imageTag);
+  mainDiv.appendChild(nestedDiv);
+
+  //Done
+  return mainDiv;
+}
 
 /*
   List of LS Instructors Github username's:
