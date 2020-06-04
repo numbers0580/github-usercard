@@ -11,7 +11,7 @@ axios.get('https://api.github.com/users/numbers0580')
     mainCards.appendChild(githubUser(fetchedUser));
   })
   .catch(errorMessage => {
-    console.log('Danger, Will Robinson, Danger!');
+    console.log('Error: Something is amiss with numbers0580!');
   })
 
 /*
@@ -37,13 +37,69 @@ let mainCards = document.querySelector('.cards');
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
     manually find some other users' github handles, or use the list found at the
     bottom of the page. Get at least 5 different Github usernames and add them as
-    Individual strings to the friendsArray below.
+    Individual strings to the friendsArray below.   <---   I think they mean the followersArray
 
     Using that array, iterate over it, requesting data for each user, creating a new card for each
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  'https://api.github.com/users/tetondan',
+  'https://api.github.com/users/dustinmyers',
+  'https://api.github.com/users/justsml',
+  'https://api.github.com/users/luishrd',
+  'https://api.github.com/users/bigknell',
+  'https://api.github.com/users/MaryamMosstoufi',
+  'https://api.github.com/users/sage-jordan',
+  'https://api.github.com/users/jduell12',
+  'https://api.github.com/users/Roboblox',
+  'https://api.github.com/users/emilioramirezeguia',
+  'https://api.github.com/users/Elisa-Alvarez',
+  'https://api.github.com/users/stephaniegatt',
+  'https://api.github.com/users/j721',
+  'https://api.github.com/users/alphaseinor',
+  'https://api.github.com/users/virginia-d90',
+  'https://api.github.com/users/Mr-Russell'
+];
+
+//So I got the additional 5 people to work, but now I want to have some fun with this. I don't believe there's a stretch goal like this
+//but the idea I'm about to detail here will still be in-line with what's asked in Part 3.
+//In Slack, there were some people that volunteered their github handles to each other for this project. I want to add them to the array above
+//Then I want to create a function that will randomly select 5 without replacement (means without duplication of any individual) and create
+//the divs for those randomly selected.
+
+let followerSeries = [];
+let x = 0;
+while(x < 5) {
+  let grabPerson = Math.floor(Math.random() * followersArray.length); // 0 - 15 for the list above
+  let unique = true;
+
+  if(x > 0) {
+    //Test to make sure there's no replacement
+    for(let y = 0; y < x; y++) {
+      if(followerSeries[y] === grabPerson) {
+        unique = false; //Found replacement, do not push grabPerson to array
+      }
+    }
+  }
+
+  if(unique) {
+    followerSeries.push(grabPerson); // store 0 - 15
+    x++;
+  }
+}
+
+for(let x = 0; x < followerSeries.length; x++) {
+  axios.get(followersArray[followerSeries[x]])
+  .then(responded => {
+    follower = responded.data;
+    //return githubUser(follower);
+    mainCards.appendChild(githubUser(follower));
+  })
+  .catch(errorMessage => {
+    console.log(`Error: Something amiss with follower at ${followerSeries[x]}`);
+  })
+}
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
