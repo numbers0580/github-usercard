@@ -3,13 +3,12 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-const myID = axios.get('https://api.github.com/users/numbers0580')
+axios.get('https://api.github.com/users/numbers0580')
   .then(responder => {
-    //console.log('numbers0580 data', responder);
-    const fetchedUser = responder.data;
-    //console.log('numbers0580 company', responder.data.company);
-    return fetchedUser;
-    //githubUser(responder.data);
+    fetchedUser = responder.data;
+    console.log('numbers0580 data',fetchedUser);
+    //return githubUser(fetchedUser);
+    mainCards.appendChild(githubUser(fetchedUser));
   })
   .catch(errorMessage => {
     console.log('Danger, Will Robinson, Danger!');
@@ -28,7 +27,10 @@ const myID = axios.get('https://api.github.com/users/numbers0580')
     and append the returned markup to the DOM as a child of .cards
 */
 let mainCards = document.querySelector('.cards');
-mainCards.appendChild(githubUser(myID));
+//debugger
+//let createdCard = myID;
+//mainCards.appendChild(createdCard);
+//mainCards.appendChild(githubUser(fetchedUser));
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -76,12 +78,12 @@ function githubUser(usersData) {
 
   //Adding Details
   mainDiv.classList.add('card');
-  imageTag.setAttribute('src', usersData['avatar_url']);
+  imageTag.setAttribute('src', usersData.avatar_url);
   nestedDiv.classList.add('card-info');
   nameTag.classList.add('name');
   nameTag.textContent = usersData.name;
-  ghPage.setAttribute('href', usersData['html_url']);
-  ghPage.textContent = usersData['html_url'];
+  ghPage.setAttribute('href', usersData.html_url);
+  ghPage.textContent = usersData.html_url;
   pTags[0].classList.add('username');
   pTags[0].textContent = usersData.login;
   pTags[1].textContent = usersData.location;
