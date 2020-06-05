@@ -70,7 +70,9 @@ const followersArray = [
 
 let followerSeries = [];
 let x = 0;
-while(x < 5) {
+let desiredQty = 5; //keep between 0 and 15
+
+while(x < desiredQty) {
   let grabPerson = Math.floor(Math.random() * followersArray.length); // 0 - 15 for the list above
   let unique = true;
 
