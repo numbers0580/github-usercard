@@ -5,8 +5,8 @@
 */
 axios.get('https://api.github.com/users/numbers0580')
   .then(responder => {
-    fetchedUser = responder.data;
-    console.log('numbers0580 data',fetchedUser);
+    let fetchedUser = responder.data;
+    //console.log('numbers0580 data',fetchedUser);
     //return githubUser(fetchedUser);
     mainCards.appendChild(githubUser(fetchedUser));
   })
@@ -85,19 +85,24 @@ while(x < 5) {
 
   if(unique) {
     followerSeries.push(grabPerson); // store 0 - 15
-    x++;
+    x++; // Find the next victim, err... person!
   }
 }
 
 for(let x = 0; x < followerSeries.length; x++) {
-  axios.get(followersArray[followerSeries[x]])
+  followerData(followersArray[followerSeries[x]]);
+}
+
+//I pulled the guts out of the above for-loop and created this function, so I could use it with a Stretch, as well
+function followerData(thePerson) {
+  axios.get(thePerson)
   .then(responded => {
-    follower = responded.data;
+    let follower = responded.data;
     //return githubUser(follower);
     mainCards.appendChild(githubUser(follower));
   })
   .catch(errorMessage => {
-    console.log(`Error: Something amiss with follower at ${followerSeries[x]}`);
+    console.log('Error: Something amiss with this follower');
   })
 }
 
@@ -169,3 +174,16 @@ function githubUser(usersData) {
     luishrd
     bigknell
 */
+
+//Stretch
+axios.get('https://api.github.com/users/alphaseinor/followers') //I went with Brian Hague's profile since he has followers, while I have 0 friends.
+  .then(collection => {
+    let followerList = collection.data;
+
+    for(a = 0; a < followerList.length; a++) {
+      followerData(`https://api.github.com/users/${followerList[a].login}`);
+    }
+  })
+  .catch(collectError => {
+    console.log('Error: Something amiss with this dynamic follower');
+  })
